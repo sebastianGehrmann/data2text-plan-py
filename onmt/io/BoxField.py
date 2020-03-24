@@ -85,8 +85,9 @@ class BoxField(RawField):
                  preprocessing=None, postprocessing=None, lower=False,
                  tokenize=(lambda s: s.split()), include_lengths=False,
                  batch_first=False, pad_token="<pad>", unk_token="<unk>",
-                 pad_first=False):
+                 pad_first=False, add_pad=0):
         self.sequential = sequential
+        self.add_pad = 0 #add_pad
         self.use_vocab = use_vocab
         self.init_token = init_token
         self.eos_token = eos_token
@@ -145,8 +146,9 @@ class BoxField(RawField):
         minibatch = list(minibatch)
         if not self.sequential:
             return minibatch
+        # print(minibatch)
         if self.fix_length is None:
-            max_len = max(len(x) for x in minibatch)
+            max_len = max(len(x) for x in minibatch) + self.add_pad
         else:
             max_len = self.fix_length + (
                 self.init_token, self.eos_token).count(None) - 2
@@ -247,7 +249,10 @@ class BoxField(RawField):
                        else x for x in arr]
             if self.postprocessing is not None:
                 arr = self.postprocessing(arr, None, train)
-
+        # SG: pad here...
+        max_len = len(arr[0])
+        arr = [a + [1] * (max_len-len(a)) for a in arr]
+        # print(arr)
         arr = self.tensor_type(arr)
         if not self.batch_first:    #applies to both sequential and non-sequential
             arr.t_()

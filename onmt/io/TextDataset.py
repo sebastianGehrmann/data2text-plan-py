@@ -224,7 +224,8 @@ class TextDataset(ONMTDatasetBase):
             use_vocab=False,
             init_token=BOS_INDEX,
             eos_token=EOS_INDEX,
-            pad_token=PAD_INDEX)
+            pad_token=PAD_INDEX,
+            add_pad=2)
 
         fields["tgt1"] = torchtext.data.Field(
             init_token=BOS_WORD, eos_token=EOS_WORD,

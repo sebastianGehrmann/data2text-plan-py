@@ -134,7 +134,9 @@ def make_features(batch, side, data_type='text'):
     keys = sorted([k for k in batch.__dict__ if feat_start in k])
     features = [batch.__dict__[k] for k in keys]
     levels = [data] + features
-
+    # print [x for x in levels]
+    # add 2 pads here. 
+    # exit()
     if data_type == 'text':
         return torch.cat([level.unsqueeze(2) for level in levels], 2)
     else:

@@ -201,6 +201,11 @@ class NMTLossCompute(LossComputeBase):
     def _compute_loss(self, batch, output, target):
         if self.decoder_type == 'pointer':
             scores = self._bottle(output)
+            # print "scores", scores.shape
+            weight = torch.ones(scores.shape[1])
+            weight = weight.cuda()
+            weight[self.padding_idx] = 0
+            self.criterion = nn.NLLLoss(weight, size_average=False)
         else:
             scores = self.generator(self._bottle(output))
 
@@ -215,7 +220,8 @@ class NMTLossCompute(LossComputeBase):
                 log_likelihood.index_fill_(0, mask, 0)
                 tmp_.index_fill_(0, mask, 0)
             gtruth = Variable(tmp_, requires_grad=False)
-
+        # print "gtruth", gtruth.shape
+        # exit()
         loss = self.criterion(scores, gtruth)
         if self.confidence < 1:
             # Default: report smoothed ppl.
