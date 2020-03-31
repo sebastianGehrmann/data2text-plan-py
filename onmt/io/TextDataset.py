@@ -182,7 +182,7 @@ class TextDataset(ONMTDatasetBase):
                 line = line.strip().split()
                 if truncate:
                     line = line[:truncate]
-
+                # print(line)
                 words, feats, n_feats = \
                     TextDataset.extract_text_features(line)
 

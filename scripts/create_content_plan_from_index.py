@@ -25,9 +25,24 @@ for i, input in enumerate(inputs):
     output = []
     eval_output = []
     records = set()
+    if not content_plan: 
+        print "no content plan!!!"
+        content_plan = [0] * 5
+    
     for record in content_plan:
-        output.append(input[int(record)].encode("utf-8"))
-        elements = input[int(record)].split(DELIM)
+        # print("--------")
+        # print("record", int(record))
+        # print("input_len", len(input))
+        # print(input)
+        in_len = len(input)
+        rec = int(record)
+        # if rec >= in_len - 1:
+        #    rec = 0
+        output.append(input[rec].encode("utf-8"))
+        elements = input[rec].split(DELIM)
+        # except:
+        #     output.append(input[0].encode("utf-8"))
+        #     elements = input[0].split(DELIM)
         if elements[0].isdigit():
             record_type = elements[2]
             if not elements[2].startswith('TEAM'):
@@ -41,8 +56,8 @@ output_file.write("\n".join(outputs))
 output_file.write("\n")
 output_file.close()
 
-output_file = open(EVAL_OUTPUT, 'w')
-output_file.write("\n")
-output_file.write("\n\n".join(eval_outputs))
-output_file.write("\n")
-output_file.close()
+# output_file = open(EVAL_OUTPUT, 'w')
+# output_file.write("\n")
+# output_file.write("\n\n".join(eval_outputs))
+# output_file.write("\n")
+# output_file.close()

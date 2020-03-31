@@ -148,6 +148,9 @@ class RNNEncoder(EncoderBase):
         if lengths is not None and not self.no_pack_padded_seq:
             # Lengths data is wrapped inside a Variable.
             lengths = lengths.view(-1).tolist()
+            # print(lengths)
+            # print(emb.shape)
+            # exit()
             packed_emb = pack(emb, lengths)
 
         memory_bank, encoder_final = self.rnn(packed_emb, encoder_state)

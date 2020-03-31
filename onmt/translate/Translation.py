@@ -141,7 +141,7 @@ class Translation(object):
 
         best_pred = self.pred_sents[0]
         best_score = self.pred_scores[0]
-        pred_sent = ' '.join(best_pred)
+        pred_sent = ' '.join([b.encode('utf-8') for b in best_pred])
         output += 'PRED {}: {}\n'.format(sent_number, pred_sent)
         print("PRED SCORE: {:.4f}".format(best_score))
 
