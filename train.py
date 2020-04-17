@@ -326,6 +326,7 @@ def lazily_load_dataset(corpus_type):
 
     # Sort the glob output by file name (by increasing indexes).
     pts = sorted(glob.glob(opt.data + '.' + corpus_type + '.[0-9]*.pt'))
+    print(pts)
     if pts:
         for pt in pts:
             yield lazy_dataset_loader(pt, corpus_type)

@@ -1,4 +1,4 @@
-BASE=~/totto
+BASE=~/ToTTo
 IDENTIFIER=full
 GPUID=0
 
