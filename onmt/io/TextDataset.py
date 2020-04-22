@@ -42,7 +42,7 @@ class TextDataset(ONMTDatasetBase):
     def __init__(self, fields, src_examples_iter, tgt_examples_iter, src2_examples_iter, tgt2_examples_iter,
                  num_src_feats=0, num_tgt_feats=0, num_src_feats2=0, num_tgt_feats2=0,
                  src_seq_length=0, tgt_seq_length=0,
-                 dynamic_dict=True, use_filter_pred=True, pointers_file=None):
+                 dynamic_dict=True, use_filter_pred=True, pointers_file=None, pointer_offset=0):
         self.data_type = 'text'
 
         # self.src_vocabs: mutated in dynamic_dict, used in
@@ -59,7 +59,7 @@ class TextDataset(ONMTDatasetBase):
         if pointers_file is not None:
             with open(pointers_file) as f:
                 content = f.readlines()
-            pointers = [x.strip() for x in content]
+            pointers = [x.strip() for x in content][pointer_offset:]
 
         if tgt2_examples_iter is not None:
             examples_iter = (self._join_dicts(src, tgt, src2, tgt2) for src, tgt, src2, tgt2 in
@@ -93,6 +93,7 @@ class TextDataset(ONMTDatasetBase):
                 ex_values, out_fields)
             src_size += len(example.src1)
             out_examples.append(example)
+        self.data_len = len(out_examples)
 
         print("average src size", src_size / len(out_examples),
               len(out_examples))
